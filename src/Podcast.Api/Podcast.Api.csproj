@@ -6,4 +6,11 @@
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="FastEndpoints" Version="4.1.0" />
+    <PackageReference Include="Fizzler.Systems.HtmlAgilityPack" Version="1.2.1" />
+    <PackageReference Include="Google.Cloud.Firestore" Version="2.5.0" />
+    <PackageReference Include="HtmlAgilityPack" Version="1.11.42" />
+  </ItemGroup>
+
 </Project>
