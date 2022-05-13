@@ -23,7 +23,7 @@ public class GenreEndpoint : EndpointWithoutRequest<List<Genre>>
     {
         var genres = this.scrapGenre.GetAllGenres();
         await this.genreRepository.SaveGenre(genres);
-        await SendOkAsync(genres.ToList(), ct);
+        await SendOkAsync(genres.ToList(),ct);
     }
 
 
