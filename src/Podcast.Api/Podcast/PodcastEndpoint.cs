@@ -1,4 +1,5 @@
 ﻿using Fizzler.Systems.HtmlAgilityPack;
+using Google.Cloud.Firestore;
 using HtmlAgilityPack;
 using System.Web;
 
@@ -6,6 +7,15 @@ namespace Podcast.Api.Podcast
 {
     public class PodcastEndpoint : Endpoint<PodcastGenre,EmptyResponse>
     {
+        private FirestoreDb db;
+        private CollectionReference collection;
+
+        public PodcastEndpoint(FirestoreDb firestoreDb)
+        {
+            this.db = firestoreDb;
+            this.collection = db.Collection("Podcast-ids");
+        }
+
         public override void Configure()
         {
             Verbs(Http.POST);
@@ -19,13 +29,9 @@ namespace Podcast.Api.Podcast
             var web = new HtmlWeb();
             var doc = web.Load(url);
             IEnumerable<HtmlNode> nodes = doc.DocumentNode.QuerySelectorAll("#selectedcontent a");
-            var genres = nodes.Select(p => new PodcastGenre
-            {
-                Name = HttpUtility.HtmlDecode(p.InnerText),
-                Url = p.Attributes["href"].Value,
-                Id = GetIdFromString(p.Attributes["href"].Value.Split("/").Last())
-            });
-            var podcast = genres.ToList();
+            var podcastIds = nodes.Select(p => GetIdFromString(p.Attributes["href"].Value.Split("/").Last()));
+            DocumentReference documentReference = this.collection.Document(req.Name);
+            await documentReference.SetAsync(new PodcastIdentifier { PodcastIds = podcastIds }, SetOptions.Overwrite);
             await SendNoContentAsync();
         }
 
