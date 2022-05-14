@@ -2,8 +2,12 @@ global using FastEndpoints;
 using Google.Apis.Auth.OAuth2;
 using Google.Cloud.Firestore;
 using Podcast.Api.Genre;
+using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Host.UseSerilog((ctx, lc) => lc
+        .WriteTo.Console());
 
 var port = Environment.GetEnvironmentVariable("PORT") ?? "8080";
 
