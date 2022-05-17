@@ -13,6 +13,7 @@
     <PackageReference Include="FastEndpoints" Version="4.1.0" />
     <PackageReference Include="Fizzler.Systems.HtmlAgilityPack" Version="1.2.1" />
     <PackageReference Include="Google.Cloud.Firestore" Version="2.5.0" />
+    <PackageReference Include="Google.Cloud.Tasks.V2" Version="2.5.0" />
     <PackageReference Include="HtmlAgilityPack" Version="1.11.42" />
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.14.0" />
     <PackageReference Include="Serilog.AspNetCore" Version="6.0.0-dev-00265" />

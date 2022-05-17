@@ -1,6 +1,7 @@
 global using FastEndpoints;
 using Google.Apis.Auth.OAuth2;
 using Google.Cloud.Firestore;
+using Google.Cloud.Tasks.V2;
 using Podcast.Api.Genre;
 using Serilog;
 
@@ -38,6 +39,15 @@ builder.Services.AddFastEndpoints();
 builder.Services.AddSingleton<FirestoreDb>(FirestoreDb.Create(projectId));
 builder.Services.AddScoped<IScrapGenre,ScrapGenre>();
 builder.Services.AddScoped<IGenreRepository,GenreRepository>();
+builder.Services.AddScoped<QueueName>((service) =>
+{
+    return new QueueName(projectId, "asia-south1", "podcast");
+});
+
+builder.Services.AddScoped<CloudTasksClient>((service) =>
+{
+    return CloudTasksClient.Create();
+});
 
 
 var app = builder.Build();
