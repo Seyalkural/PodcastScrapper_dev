@@ -7,6 +7,7 @@ using Serilog;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Host.UseSerilog((ctx, lc) => lc
+        .MinimumLevel.Information()
         .WriteTo.Console());
 
 var port = Environment.GetEnvironmentVariable("PORT") ?? "8080";
