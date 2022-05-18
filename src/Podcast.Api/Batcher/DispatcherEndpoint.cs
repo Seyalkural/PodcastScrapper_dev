@@ -54,31 +54,34 @@ namespace Podcast.Api.Batcher
         {
             foreach (var item in genreList)
             {
-                var payload = JsonSerializer.Serialize(new PodcastGenre
+                if (!string.IsNullOrEmpty(item.Name))
                 {
-                    Name = item.Name,
-                    Url = item.Url,
-                    Id = item.Id,
-                });
-                var httpsurl = BaseURL.Replace("http", "https");
-                var request = new Google.Cloud.Tasks.V2.HttpRequest
-                {
-                    Url = $"{httpsurl}/api/podcast",
-                    Body = ByteString.CopyFromUtf8(payload),
-                    HttpMethod = Google.Cloud.Tasks.V2.HttpMethod.Post
-                };
-                request.Headers.Add("Content-Type", "application/json");
-                var cloudTask = this.cloudTasksClient.CreateTask(new CreateTaskRequest
-                {
-                    Parent = this.queueName.ToString(),
-                    Task = new Google.Cloud.Tasks.V2.Task
+                    var payload = JsonSerializer.Serialize(new PodcastGenre
                     {
-                        HttpRequest = request,
-                        ScheduleTime = Google.Protobuf.WellKnownTypes
-                                            .Timestamp
-                                            .FromDateTime(DateTime.UtcNow.AddSeconds(5))
-                    }
-                });
+                        Name = item.Name,
+                        Url = item.Url,
+                        Id = item.Id,
+                    });
+                    var httpsurl = BaseURL.Replace("http", "https");
+                    var request = new Google.Cloud.Tasks.V2.HttpRequest
+                    {
+                        Url = $"{httpsurl}/api/podcast",
+                        Body = ByteString.CopyFromUtf8(payload),
+                        HttpMethod = Google.Cloud.Tasks.V2.HttpMethod.Post
+                    };
+                    request.Headers.Add("Content-Type", "application/json");
+                    var cloudTask = this.cloudTasksClient.CreateTask(new CreateTaskRequest
+                    {
+                        Parent = this.queueName.ToString(),
+                        Task = new Google.Cloud.Tasks.V2.Task
+                        {
+                            HttpRequest = request,
+                            ScheduleTime = Google.Protobuf.WellKnownTypes
+                                                .Timestamp
+                                                .FromDateTime(DateTime.UtcNow.AddSeconds(5))
+                        }
+                    });
+                }
             }
         }
     }
