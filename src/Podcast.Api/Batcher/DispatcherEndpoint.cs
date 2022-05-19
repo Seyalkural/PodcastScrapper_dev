@@ -42,9 +42,7 @@ namespace Podcast.Api.Batcher
                 var genre = document.ConvertTo<Genre.Genre>();
                 genreList.Add(genre);
             }
-            var count = genreList.Count;
-            this.logger.LogInformation("Fetched {count} of Genre", count);
-            this.logger.LogInformation("Base URL : {BaseURL}", BaseURL.Replace("http","https"));
+            
             Dispatch(genreList);
 
             await SendNoContentAsync(ct);
